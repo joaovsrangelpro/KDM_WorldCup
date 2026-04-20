@@ -16,6 +16,7 @@ function App() {
       const teamsFromApi = await getAllTeams()
       const drawnGroups = drawGroups(teamsFromApi)
       const groupValidation = validateGroups(drawnGroups)
+      const matches = generateAllGroupMatches(drawnGroups)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
@@ -23,6 +24,8 @@ function App() {
 
       setTeams(teamsFromApi)
       setGroups(drawnGroups)
+      setGroupMatches(matches)
+
     } catch (err) {
       console.error(err)
       setError('Não foi possível buscar as seleções. Confira o console.')
@@ -74,6 +77,36 @@ function App() {
                     <li key={team.token}>{team.nome}</li>
                   ))}
                 </ul>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section>
+        <h2>Partidas da fase de grupos</h2>
+
+        {groupMatches.length === 0 ? (
+          <p>Nenhuma partida gerada ainda.</p>
+        ) : (
+          <div>
+            {groupMatches.map((groupMatch) => (
+              <article key={groupMatch.groupName}>
+                <h3>Grupo {groupMatch.groupName}</h3>
+
+                {groupMatch.rounds.map((round) => (
+                  <div key={`${groupMatch.groupName}-${round.round}`}>
+                    <h4>Rodada {round.round}</h4>
+
+                    <ul>
+                      {round.matches.map((match) => (
+                        <li key={`${match.team1.token}-${match.team2.token}`}>
+                          {match.team1.nome} x {match.team2.nome}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </article>
             ))}
           </div>
