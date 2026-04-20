@@ -14,3 +14,30 @@ export async function getAllTeams(gitUser) {
 
   return response.json()
 }
+
+export async function sendFinalResult(finalResult) {
+  const response = await fetch(`${BASE_URL}/FinalResult`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'git-user': 'joaovsrangelpro',
+    },
+    body: JSON.stringify(finalResult),
+  })
+
+  const responseText = await response.text()
+
+  if (!response.ok) {
+    throw new Error(responseText || 'Não foi possível enviar o resultado final')
+  }
+
+  if (!responseText) {
+    return null
+  }
+
+  try {
+    return JSON.parse(responseText)
+  } catch {
+    return responseText
+  }
+}

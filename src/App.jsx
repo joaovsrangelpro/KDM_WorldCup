@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getAllTeams } from './services/worldCupApi'
+import { getAllTeams, sendFinalResult } from './services/worldCupApi'
 import { drawGroups, 
   validateGroups 
 } from './simulation/groupDraw'
@@ -26,12 +26,26 @@ function App() {
   const [champion, setChampion] = useState(null)
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isSendingFinalResult, setIsSendingFinalResult] = useState(false)
   const [error, setError] = useState('')
+  const [finalResultStatus, setFinalResultStatus] = useState('')
+
+  function buildFinalResultPayload(match) {
+    return {
+      equipeA: match.team1.token,
+      equipeB: match.team2.token,
+      golsEquipeA: match.team1Score,
+      golsEquipeB: match.team2Score,
+      golsPenaltyTimeA: match.team1Penalties,
+      golsPenaltyTimeB: match.team2Penalties,
+    }
+  }
 
   async function handleLoadTeams() {
     try {
       setIsLoading(true)
       setError('')
+      setFinalResultStatus('')
 
       const teamsFromApi = await getAllTeams()
       const drawnGroups = drawGroups(teamsFromApi)
@@ -78,6 +92,30 @@ function App() {
       setError('Não foi possível buscar as seleções. Confira o console.')
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  async function handleSendFinalResult() {
+    if (finalMatch.length === 0) {
+      setFinalResultStatus('Simule a Copa antes de enviar o resultado final.')
+      return
+    }
+
+    try {
+      setIsSendingFinalResult(true)
+      setFinalResultStatus('')
+
+      const finalResultPayload = buildFinalResultPayload(finalMatch[0])
+      const response = await sendFinalResult(finalResultPayload)
+
+      console.log('Resultado final enviado:', finalResultPayload)
+      console.log('Resposta da API:', response)
+      setFinalResultStatus('Resultado final enviado com sucesso.')
+    } catch (err) {
+      console.error(err)
+      setFinalResultStatus('Não foi possível enviar o resultado final. Confira o console.')
+    } finally {
+      setIsSendingFinalResult(false)
     }
   }
 
@@ -311,6 +349,16 @@ function App() {
         ) : (
           <p>Nenhum campeão definido ainda.</p>
         )}
+
+        <button
+          type="button"
+          onClick={handleSendFinalResult}
+          disabled={!champion || isSendingFinalResult}
+        >
+          {isSendingFinalResult ? 'Enviando resultado...' : 'Enviar resultado final'}
+        </button>
+
+        {finalResultStatus && <p>{finalResultStatus}</p>}
       </section>
 
     </main>
