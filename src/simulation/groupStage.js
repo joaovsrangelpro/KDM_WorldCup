@@ -1,3 +1,15 @@
+function generateRandomScore() {
+  return Math.floor(Math.random() * 6)
+}
+
+function simulateMatch(match) {
+  return {
+    ...match,
+    team1Score: generateRandomScore(),
+    team2Score: generateRandomScore(),
+  }
+}
+
 export function generateGroupMatches(group) {
   const [teamA, teamB, teamC, teamD] = group.teams
 
@@ -31,4 +43,14 @@ export function generateGroupMatches(group) {
 
 export function generateAllGroupMatches(groups) {
   return groups.map(generateGroupMatches)
+}
+
+export function simulateGroupMatches(groupMatches) {
+  return groupMatches.map((groupMatch) => ({
+    ...groupMatch,
+    rounds: groupMatch.rounds.map((round) => ({
+      ...round,
+      matches: round.matches.map(simulateMatch),
+    })),
+  }))
 }
