@@ -1,10 +1,11 @@
 const BASE_URL = 'https://development-internship-api.geopostenergy.com/WorldCup'
+const GIT_USER = 'joaovsrangelpro'
 
 export async function getAllTeams(gitUser) {
   const response = await fetch(`${BASE_URL}/GetAllTeams`, {
     method: 'GET',
     headers: {
-      'git-user': 'joaovsrangelpro',
+      'git-user': GIT_USER,
     },
   })
 
