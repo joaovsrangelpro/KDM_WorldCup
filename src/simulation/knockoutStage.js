@@ -1,3 +1,26 @@
+function generateRandomScore() {
+  return Math.floor(Math.random() * 6)
+}
+
+function generatePenaltyScore() {
+  return Math.floor(Math.random() * 6)
+}
+
+function simulatePenalties() {
+  let team1Penalties = generatePenaltyScore()
+  let team2Penalties = generatePenaltyScore()
+
+  while (team1Penalties === team2Penalties) {
+    team1Penalties = generatePenaltyScore()
+    team2Penalties = generatePenaltyScore()
+  }
+
+  return {
+    team1Penalties,
+    team2Penalties,
+  }
+}
+
 export function generateRoundOf16(groupStandings) {
   const standingsByGroup = new Map(
     groupStandings.map((groupStanding) => [
@@ -48,4 +71,36 @@ export function generateRoundOf16(groupStandings) {
       team2: standingsByGroup.get('G')[1].team,
     },
   ]
+}
+
+export function simulateKnockoutMatches(matches) {
+  return matches.map((match) => {
+    const team1Score = generateRandomScore()
+    const team2Score = generateRandomScore()
+
+    let team1Penalties = 0
+    let team2Penalties = 0
+    let winner = null
+
+    if (team1Score > team2Score) {
+      winner = match.team1
+    } else if (team2Score > team1Score) {
+      winner = match.team2
+    } else {
+      const penalties = simulatePenalties()
+
+      team1Penalties = penalties.team1Penalties
+      team2Penalties = penalties.team2Penalties
+      winner = team1Penalties > team2Penalties ? match.team1 : match.team2
+    }
+
+    return {
+      ...match,
+      team1Score,
+      team2Score,
+      team1Penalties,
+      team2Penalties,
+      winner,
+    }
+  })
 }
