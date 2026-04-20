@@ -4,6 +4,7 @@ import { drawGroups,
   validateGroups 
 } from './simulation/groupDraw'
 import {
+  calculateGroupStandings,
   generateAllGroupMatches,
   simulateGroupMatches,
 } from './simulation/groupStage'
@@ -12,6 +13,7 @@ function App() {
   const [teams, setTeams] = useState([])
   const [groups, setGroups] = useState([])
   const [groupMatches, setGroupMatches] = useState([])
+  const [groupStandings, setGroupStandings] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -25,15 +27,18 @@ function App() {
       const groupValidation = validateGroups(drawnGroups)
       const generatedGroupMatches = generateAllGroupMatches(drawnGroups)
       const simulatedGroupMatches = simulateGroupMatches(generatedGroupMatches)
+      const calculatedGroupStandings = calculateGroupStandings(simulatedGroupMatches)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
       console.log('Validação dos grupos:', groupValidation)
       console.log('Partidas simuladas da fase de grupos:', simulatedGroupMatches)
+      console.log('Classificação dos grupos:', calculatedGroupStandings)
 
       setTeams(teamsFromApi)
       setGroups(drawnGroups)
       setGroupMatches(simulatedGroupMatches)
+      setGroupStandings(calculatedGroupStandings)
 
     } catch (err) {
       console.error(err)
@@ -121,6 +126,55 @@ function App() {
         </div>
       )}
     </section>
+
+      <section>
+        <h2>Classificação dos grupos</h2>
+
+        {groupStandings.length === 0 ? (
+          <p>Nenhuma classificação calculada ainda.</p>
+        ) : (
+          <div>
+            {groupStandings.map((groupStanding) => (
+              <article key={groupStanding.groupName}>
+                <h3>Grupo {groupStanding.groupName}</h3>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Posição</th>
+                      <th>Seleção</th>
+                      <th>Pontos</th>
+                      <th>Jogos</th>
+                      <th>Vitórias</th>
+                      <th>Empates</th>
+                      <th>Derrotas</th>
+                      <th>GP</th>
+                      <th>GC</th>
+                      <th>Saldo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {groupStanding.table.map((standing, index) => (
+                      <tr key={standing.team.token}>
+                        <td>{index + 1}</td>
+                        <td>{standing.team.nome}</td>
+                        <td>{standing.points}</td>
+                        <td>{standing.games}</td>
+                        <td>{standing.wins}</td>
+                        <td>{standing.draws}</td>
+                        <td>{standing.losses}</td>
+                        <td>{standing.goalsFor}</td>
+                        <td>{standing.goalsAgainst}</td>
+                        <td>{standing.goalDifference}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
     </main>
   )
 }
