@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { getAllTeams } from './services/worldCupApi'
-import { drawGroups } from './simulation/groupDraw'
+import { drawGroups, validateGroups } from './simulation/groupDraw'
 
 function App() {
   const [teams, setTeams] = useState([])
@@ -15,9 +15,12 @@ function App() {
 
       const teamsFromApi = await getAllTeams()
       const drawnGroups = drawGroups(teamsFromApi)
+      const groupValidation = validateGroups(drawnGroups)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
+      console.log('Validação dos grupos:', groupValidation)
+
       setTeams(teamsFromApi)
       setGroups(drawnGroups)
     } catch (err) {
