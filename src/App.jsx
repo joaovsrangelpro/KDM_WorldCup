@@ -44,8 +44,8 @@ function App() {
         ) : (
           <ul>
             {teams.map((team, index) => (
-              <li key={team.id || team.Id || index}>
-                {team.name || team.Name || team.country || team.Country || JSON.stringify(team)}
+              <li key={team.token}>
+                {team.nome}
               </li>
             ))}
           </ul>
