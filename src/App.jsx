@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { getAllTeams } from './services/worldCupApi'
+import { drawGroups } from './simulation/groupDraw'
 
 function App() {
   const [teams, setTeams] = useState([])
+  const [groups, setGroups] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -12,9 +14,12 @@ function App() {
       setError('')
 
       const teamsFromApi = await getAllTeams()
+      const drawnGroups = drawGroups(teamsFromApi)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
+      console.log('Grupos sorteados:', drawnGroups)
       setTeams(teamsFromApi)
+      setGroups(drawnGroups)
     } catch (err) {
       console.error(err)
       setError('Não foi possível buscar as seleções. Confira o console.')
@@ -27,10 +32,10 @@ function App() {
     <main>
       <section>
         <h1>KDM World Cup Simulator</h1>
-        <p>Primeiro teste: consumir a API oficial das 32 seleções.</p>
+        <p>Consumo da API e sorteio dos grupos da Copa.</p>
 
         <button type="button" onClick={handleLoadTeams} disabled={isLoading}>
-          {isLoading ? 'Carregando...' : 'Buscar seleções'}
+          {isLoading ? 'Carregando...' : 'Buscar seleções e sortear grupos'}
         </button>
 
         {error && <p>{error}</p>}
@@ -43,12 +48,32 @@ function App() {
           <p>Nenhuma seleção carregada ainda.</p>
         ) : (
           <ul>
-            {teams.map((team, index) => (
-              <li key={team.token}>
-                {team.nome}
-              </li>
+            {teams.map((team) => (
+              <li key={team.token}>{team.nome}</li>
             ))}
           </ul>
+        )}
+      </section>
+
+      <section>
+        <h2>Grupos sorteados</h2>
+
+        {groups.length === 0 ? (
+          <p>Nenhum grupo sorteado ainda.</p>
+        ) : (
+          <div>
+            {groups.map((group) => (
+              <article key={group.name}>
+                <h3>Grupo {group.name}</h3>
+
+                <ul>
+                  {group.teams.map((team) => (
+                    <li key={team.token}>{team.nome}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
         )}
       </section>
     </main>
