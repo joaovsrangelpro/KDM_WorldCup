@@ -303,6 +303,16 @@ function App() {
         )}
       </section>
 
+      <section>
+        <h2>Campeão</h2>
+
+        {champion ? (
+          <p>{champion.nome}</p>
+        ) : (
+          <p>Nenhum campeão definido ainda.</p>
+        )}
+      </section>
+
     </main>
   )
 }
