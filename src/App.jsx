@@ -8,7 +8,10 @@ import {
   generateAllGroupMatches,
   simulateGroupMatches,
 } from './simulation/groupStage'
-import { generateRoundOf16 } from './simulation/knockoutStage'
+import {
+  generateRoundOf16,
+  simulateKnockoutMatches,
+} from './simulation/knockoutStage'
 
 function App() {
   const [teams, setTeams] = useState([])
@@ -31,19 +34,20 @@ function App() {
       const simulatedGroupMatches = simulateGroupMatches(generatedGroupMatches)
       const calculatedGroupStandings = calculateGroupStandings(simulatedGroupMatches)
       const roundOf16Matches = generateRoundOf16(calculatedGroupStandings)
+      const simulatedRoundOf16Matches = simulateKnockoutMatches(roundOf16Matches)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
       console.log('Validação dos grupos:', groupValidation)
       console.log('Partidas simuladas da fase de grupos:', simulatedGroupMatches)
       console.log('Classificação dos grupos:', calculatedGroupStandings)
-      console.log('Oitavas de final:', roundOf16Matches)
+      console.log('Oitavas de final:', simulatedRoundOf16Matches)
 
       setTeams(teamsFromApi)
       setGroups(drawnGroups)
       setGroupMatches(simulatedGroupMatches)
       setGroupStandings(calculatedGroupStandings)
-      setRoundOf16(roundOf16Matches)
+      setRoundOf16(simulatedRoundOf16Matches)
 
     } catch (err) {
       console.error(err)
@@ -190,7 +194,14 @@ function App() {
           <ul>
             {roundOf16.map((match) => (
               <li key={match.match}>
-                Jogo {match.match}: {match.team1.nome} x {match.team2.nome}
+                Jogo {match.match}: {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
+                {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
+                  <span>
+                    {' '}
+                    ({match.team1Penalties} x {match.team2Penalties} nos pênaltis)
+                  </span>
+                ) : null}
+                <strong> - Vencedor: {match.winner.nome}</strong>
               </li>
             ))}
           </ul>
