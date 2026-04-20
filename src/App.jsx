@@ -21,6 +21,10 @@ function App() {
   const [groupStandings, setGroupStandings] = useState([])
   const [roundOf16, setRoundOf16] = useState([])
   const [quarterFinals, setQuarterFinals] = useState([])
+  const [semifinals, setSemifinals] = useState([])
+  const [finalMatch, setFinalMatch] = useState([])
+  const [champion, setChampion] = useState(null)
+
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -35,10 +39,20 @@ function App() {
       const generatedGroupMatches = generateAllGroupMatches(drawnGroups)
       const simulatedGroupMatches = simulateGroupMatches(generatedGroupMatches)
       const calculatedGroupStandings = calculateGroupStandings(simulatedGroupMatches)
+
       const roundOf16Matches = generateRoundOf16(calculatedGroupStandings)
       const simulatedRoundOf16Matches = simulateKnockoutMatches(roundOf16Matches)
+
       const quarterFinalMatches = generateNextKnockoutRound(simulatedRoundOf16Matches)
       const simulatedQuarterFinalMatches = simulateKnockoutMatches(quarterFinalMatches)
+
+      const semifinalMatches = generateNextKnockoutRound(simulatedQuarterFinalMatches)
+      const simulatedSemifinalMatches = simulateKnockoutMatches(semifinalMatches)
+
+      const finalMatches = generateNextKnockoutRound(simulatedSemifinalMatches)
+      const simulatedFinalMatches = simulateKnockoutMatches(finalMatches)
+
+      const tournamentChampion = simulatedFinalMatches[0].winner
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
@@ -52,8 +66,12 @@ function App() {
       setGroups(drawnGroups)
       setGroupMatches(simulatedGroupMatches)
       setGroupStandings(calculatedGroupStandings)
+      
       setRoundOf16(simulatedRoundOf16Matches)
       setQuarterFinals(simulatedQuarterFinalMatches)
+      setSemifinals(simulatedSemifinalMatches)
+      setFinalMatch(simulatedFinalMatches)
+      setChampion(tournamentChampion)
 
     } catch (err) {
       console.error(err)
@@ -236,6 +254,55 @@ function App() {
           </ul>
         )}
       </section>
+
+      <section>
+        <h2>Semifinais</h2>
+
+        {semifinals.length === 0 ? (
+          <p>Nenhum confronto definido ainda.</p>
+        ) : (
+          <ul>
+            {semifinals.map((match) => (
+              <li key={match.match}>
+                Jogo {match.match}: {match.team1.nome} {match.team1Score} x{' '}
+                {match.team2Score} {match.team2.nome}
+                {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
+                  <span>
+                    {' '}
+                    ({match.team1Penalties} x {match.team2Penalties} nos pênaltis)
+                  </span>
+                ) : null}
+                <strong> - Vencedor: {match.winner.nome}</strong>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section>
+        <h2>Final</h2>
+
+        {finalMatch.length === 0 ? (
+          <p>Nenhum confronto definido ainda.</p>
+        ) : (
+          <ul>
+            {finalMatch.map((match) => (
+              <li key={match.match}>
+                {match.team1.nome} {match.team1Score} x {match.team2Score}{' '}
+                {match.team2.nome}
+                {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
+                  <span>
+                    {' '}
+                    ({match.team1Penalties} x {match.team2Penalties} nos pênaltis)
+                  </span>
+                ) : null}
+                <strong> - Campeão: {match.winner.nome}</strong>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
     </main>
   )
 }
