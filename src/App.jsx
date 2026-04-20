@@ -8,12 +8,14 @@ import {
   generateAllGroupMatches,
   simulateGroupMatches,
 } from './simulation/groupStage'
+import { generateRoundOf16 } from './simulation/knockoutStage'
 
 function App() {
   const [teams, setTeams] = useState([])
   const [groups, setGroups] = useState([])
   const [groupMatches, setGroupMatches] = useState([])
   const [groupStandings, setGroupStandings] = useState([])
+  const [roundOf16, setRoundOf16] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -28,17 +30,20 @@ function App() {
       const generatedGroupMatches = generateAllGroupMatches(drawnGroups)
       const simulatedGroupMatches = simulateGroupMatches(generatedGroupMatches)
       const calculatedGroupStandings = calculateGroupStandings(simulatedGroupMatches)
+      const roundOf16Matches = generateRoundOf16(calculatedGroupStandings)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
       console.log('Validação dos grupos:', groupValidation)
       console.log('Partidas simuladas da fase de grupos:', simulatedGroupMatches)
       console.log('Classificação dos grupos:', calculatedGroupStandings)
+      console.log('Oitavas de final:', roundOf16Matches)
 
       setTeams(teamsFromApi)
       setGroups(drawnGroups)
       setGroupMatches(simulatedGroupMatches)
       setGroupStandings(calculatedGroupStandings)
+      setRoundOf16(roundOf16Matches)
 
     } catch (err) {
       console.error(err)
@@ -173,6 +178,22 @@ function App() {
               </article>
             ))}
           </div>
+        )}
+      </section>
+
+      <section>
+        <h2>Oitavas de final</h2>
+
+        {roundOf16.length === 0 ? (
+          <p>Nenhum confronto definido ainda.</p>
+        ) : (
+          <ul>
+            {roundOf16.map((match) => (
+              <li key={match.match}>
+                Jogo {match.match}: {match.team1.nome} x {match.team2.nome}
+              </li>
+            ))}
+          </ul>
         )}
       </section>
     </main>
