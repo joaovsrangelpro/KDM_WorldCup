@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { getAllTeams } from './services/worldCupApi'
 import { drawGroups, validateGroups } from './simulation/groupDraw'
+import { generateAllGroupMatches } from './simulation/groupStage'
 
 function App() {
   const [teams, setTeams] = useState([])
   const [groups, setGroups] = useState([])
+  const [groupMatches, setGroupMatches] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -16,7 +18,7 @@ function App() {
       const teamsFromApi = await getAllTeams()
       const drawnGroups = drawGroups(teamsFromApi)
       const groupValidation = validateGroups(drawnGroups)
-      const matches = generateAllGroupMatches(drawnGroups)
+      const generatedGroupMatches = generateAllGroupMatches(drawnGroups)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
@@ -24,7 +26,7 @@ function App() {
 
       setTeams(teamsFromApi)
       setGroups(drawnGroups)
-      setGroupMatches(matches)
+      setGroupMatches(generatedGroupMatches)
 
     } catch (err) {
       console.error(err)
@@ -84,34 +86,34 @@ function App() {
       </section>
 
       <section>
-        <h2>Partidas da fase de grupos</h2>
+      <h2>Partidas da fase de grupos</h2>
 
-        {groupMatches.length === 0 ? (
-          <p>Nenhuma partida gerada ainda.</p>
-        ) : (
-          <div>
-            {groupMatches.map((groupMatch) => (
-              <article key={groupMatch.groupName}>
-                <h3>Grupo {groupMatch.groupName}</h3>
+      {groupMatches.length === 0 ? (
+        <p>Nenhuma partida gerada ainda.</p>
+      ) : (
+        <div>
+          {groupMatches.map((groupMatch) => (
+            <article key={groupMatch.groupName}>
+              <h3>Grupo {groupMatch.groupName}</h3>
 
-                {groupMatch.rounds.map((round) => (
-                  <div key={`${groupMatch.groupName}-${round.round}`}>
-                    <h4>Rodada {round.round}</h4>
+              {groupMatch.rounds.map((round) => (
+                <div key={`${groupMatch.groupName}-${round.round}`}>
+                  <h4>Rodada {round.round}</h4>
 
-                    <ul>
-                      {round.matches.map((match) => (
-                        <li key={`${match.team1.token}-${match.team2.token}`}>
-                          {match.team1.nome} x {match.team2.nome}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
+                  <ul>
+                    {round.matches.map((match) => (
+                      <li key={`${match.team1.token}-${match.team2.token}`}>
+                        {match.team1.nome} x {match.team2.nome}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
     </main>
   )
 }
