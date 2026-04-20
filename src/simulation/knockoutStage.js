@@ -104,3 +104,19 @@ export function simulateKnockoutMatches(matches) {
     }
   })
 }
+
+export function generateNextKnockoutRound(previousRoundMatches) {
+  const winners = previousRoundMatches.map((match) => match.winner)
+
+  const nextRoundMatches = []
+
+  for (let index = 0; index < winners.length; index += 2) {
+    nextRoundMatches.push({
+      match: index / 2 + 1,
+      team1: winners[index],
+      team2: winners[index + 1],
+    })
+  }
+
+  return nextRoundMatches
+}
