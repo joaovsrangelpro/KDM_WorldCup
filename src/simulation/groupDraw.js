@@ -27,3 +27,21 @@ export function drawGroups(teams) {
     }
   })
 }
+
+
+export function validateGroups(groups) {
+  const groupedTeams = groups.flatMap((group) => group.teams)
+  const uniqueTeamTokens = new Set(groupedTeams.map((team) => team.token))
+
+  return {
+    totalGroups: groups.length,
+    teamsPerGroup: groups.map((group) => group.teams.length),
+    totalTeams: groupedTeams.length,
+    uniqueTeams: uniqueTeamTokens.size,
+    isValid:
+      groups.length === 8 &&
+      groups.every((group) => group.teams.length === 4) &&
+      groupedTeams.length === 32 &&
+      uniqueTeamTokens.size === 32,
+  }
+}
