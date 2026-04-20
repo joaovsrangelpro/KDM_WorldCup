@@ -125,17 +125,22 @@ export function calculateGroupStandings(groupMatches) {
       })
     })
 
-    const table = Array.from(standings.values()).sort((teamA, teamB) => {
-      if (teamB.points !== teamA.points) {
-        return teamB.points - teamA.points
-      }
+    const table = Array.from(standings.values())
+      .map((standing) => ({
+        ...standing,
+        drawOrder: Math.random(),
+      }))
+      .sort((teamA, teamB) => {
+        if (teamB.points !== teamA.points) {
+          return teamB.points - teamA.points
+        }
 
-      if (teamB.goalDifference !== teamA.goalDifference) {
-        return teamB.goalDifference - teamA.goalDifference
-      }
+        if (teamB.goalDifference !== teamA.goalDifference) {
+          return teamB.goalDifference - teamA.goalDifference
+        }
 
-      return Math.random() - 0.5
-    })
+        return teamA.drawOrder - teamB.drawOrder
+      })
 
     return {
       groupName: groupMatch.groupName,
