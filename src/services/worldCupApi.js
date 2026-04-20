@@ -1,7 +1,7 @@
 const BASE_URL = 'https://development-internship-api.geopostenergy.com/WorldCup'
 const GIT_USER = 'joaovsrangelpro'
 
-export async function getAllTeams(gitUser) {
+export async function getAllTeams() {
   const response = await fetch(`${BASE_URL}/GetAllTeams`, {
     method: 'GET',
     headers: {
@@ -21,7 +21,7 @@ export async function sendFinalResult(finalResult) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'git-user': 'joaovsrangelpro',
+      'git-user': GIT_USER,
     },
     body: JSON.stringify(finalResult),
   })
