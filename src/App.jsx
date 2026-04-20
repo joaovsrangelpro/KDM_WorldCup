@@ -9,6 +9,7 @@ import {
   simulateGroupMatches,
 } from './simulation/groupStage'
 import {
+  generateNextKnockoutRound,
   generateRoundOf16,
   simulateKnockoutMatches,
 } from './simulation/knockoutStage'
@@ -19,6 +20,7 @@ function App() {
   const [groupMatches, setGroupMatches] = useState([])
   const [groupStandings, setGroupStandings] = useState([])
   const [roundOf16, setRoundOf16] = useState([])
+  const [quarterFinals, setQuarterFinals] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -35,6 +37,8 @@ function App() {
       const calculatedGroupStandings = calculateGroupStandings(simulatedGroupMatches)
       const roundOf16Matches = generateRoundOf16(calculatedGroupStandings)
       const simulatedRoundOf16Matches = simulateKnockoutMatches(roundOf16Matches)
+      const quarterFinalMatches = generateNextKnockoutRound(simulatedRoundOf16Matches)
+      const simulatedQuarterFinalMatches = simulateKnockoutMatches(quarterFinalMatches)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
@@ -42,12 +46,14 @@ function App() {
       console.log('Partidas simuladas da fase de grupos:', simulatedGroupMatches)
       console.log('Classificação dos grupos:', calculatedGroupStandings)
       console.log('Oitavas de final:', simulatedRoundOf16Matches)
+      console.log('Quartas de final:', simulatedQuarterFinalMatches)
 
       setTeams(teamsFromApi)
       setGroups(drawnGroups)
       setGroupMatches(simulatedGroupMatches)
       setGroupStandings(calculatedGroupStandings)
       setRoundOf16(simulatedRoundOf16Matches)
+      setQuarterFinals(simulatedQuarterFinalMatches)
 
     } catch (err) {
       console.error(err)
@@ -193,6 +199,29 @@ function App() {
         ) : (
           <ul>
             {roundOf16.map((match) => (
+              <li key={match.match}>
+                Jogo {match.match}: {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
+                {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
+                  <span>
+                    {' '}
+                    ({match.team1Penalties} x {match.team2Penalties} nos pênaltis)
+                  </span>
+                ) : null}
+                <strong> - Vencedor: {match.winner.nome}</strong>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section>
+        <h2>Quartas de final</h2>
+
+        {quarterFinals.length === 0 ? (
+          <p>Nenhum confronto definido ainda.</p>
+        ) : (
+          <ul>
+            {quarterFinals.map((match) => (
               <li key={match.match}>
                 Jogo {match.match}: {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
                 {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
