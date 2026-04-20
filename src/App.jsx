@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { getAllTeams } from './services/worldCupApi'
-import { drawGroups, validateGroups } from './simulation/groupDraw'
-import { generateAllGroupMatches } from './simulation/groupStage'
+import { drawGroups, 
+  validateGroups 
+} from './simulation/groupDraw'
+import {
+  generateAllGroupMatches,
+  simulateGroupMatches,
+} from './simulation/groupStage'
 
 function App() {
   const [teams, setTeams] = useState([])
@@ -19,14 +24,16 @@ function App() {
       const drawnGroups = drawGroups(teamsFromApi)
       const groupValidation = validateGroups(drawnGroups)
       const generatedGroupMatches = generateAllGroupMatches(drawnGroups)
+      const simulatedGroupMatches = simulateGroupMatches(generatedGroupMatches)
 
       console.log('Seleções retornadas pela API:', teamsFromApi)
       console.log('Grupos sorteados:', drawnGroups)
       console.log('Validação dos grupos:', groupValidation)
+      console.log('Partidas simuladas da fase de grupos:', simulatedGroupMatches)
 
       setTeams(teamsFromApi)
       setGroups(drawnGroups)
-      setGroupMatches(generatedGroupMatches)
+      setGroupMatches(simulatedGroupMatches)
 
     } catch (err) {
       console.error(err)
@@ -103,7 +110,7 @@ function App() {
                   <ul>
                     {round.matches.map((match) => (
                       <li key={`${match.team1.token}-${match.team2.token}`}>
-                        {match.team1.nome} x {match.team2.nome}
+                        {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
                       </li>
                     ))}
                   </ul>
