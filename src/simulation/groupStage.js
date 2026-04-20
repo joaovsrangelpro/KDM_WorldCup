@@ -43,6 +43,7 @@ function applyMatchToStandings(standings, match) {
   team2Standing.goalDifference =
     team2Standing.goalsFor - team2Standing.goalsAgainst
 
+  // Group stage scoring follows the assessment rules: win = 3 points, draw = 1 point.
   if (match.team1Score > match.team2Score) {
     team1Standing.points += 3
     team1Standing.wins += 1
@@ -62,6 +63,7 @@ function applyMatchToStandings(standings, match) {
 export function generateGroupMatches(group) {
   const [teamA, teamB, teamC, teamD] = group.teams
 
+  // Each group has 4 teams, so these 3 rounds make every team face each other once.
   return {
     groupName: group.name,
     rounds: [
@@ -124,7 +126,8 @@ export function calculateGroupStandings(groupMatches) {
         applyMatchToStandings(standings, match)
       })
     })
-
+    
+    // Tiebreakers follow the assessment order: points, goal difference, then random draw.
     const table = Array.from(standings.values())
       .map((standing) => ({
         ...standing,

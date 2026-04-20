@@ -87,6 +87,7 @@ export function simulateKnockoutMatches(matches) {
     } else if (team2Score > team1Score) {
       winner = match.team2
     } else {
+      // Knockout matches cannot end tied, so penalties decide tied matches.
       const penalties = simulatePenalties()
 
       team1Penalties = penalties.team1Penalties
@@ -109,7 +110,8 @@ export function generateNextKnockoutRound(previousRoundMatches) {
   const winners = previousRoundMatches.map((match) => match.winner)
 
   const nextRoundMatches = []
-
+  
+  // Winners are paired in order to build the next knockout round.
   for (let index = 0; index < winners.length; index += 2) {
     nextRoundMatches.push({
       match: index / 2 + 1,

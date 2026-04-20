@@ -3,6 +3,7 @@ const GROUP_NAMES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 function shuffleTeams(teams) {
   const shuffledTeams = [...teams]
 
+  // Fisher-Yates keeps the group draw random without mutating the API response.
   for (let index = shuffledTeams.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1))
 
