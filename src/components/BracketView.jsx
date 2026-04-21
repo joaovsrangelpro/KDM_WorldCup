@@ -116,7 +116,7 @@ export default function BracketView({
     <section className="bracket-view">
       <div className="bracket-title">
         <p className="eyebrow">Fase eliminatória</p>
-        <h2>World Cup Bracket</h2>
+        <h2>Chaveamento da Copa</h2>
       </div>
 
       {!hasBracket ? (
