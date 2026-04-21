@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import BracketView from './components/BracketView'
 import { getAllTeams, sendFinalResult } from './services/worldCupApi'
 import { drawGroups, 
   validateGroups 
@@ -29,6 +30,7 @@ function App() {
   const [isSendingFinalResult, setIsSendingFinalResult] = useState(false)
   const [error, setError] = useState('')
   const [finalResultStatus, setFinalResultStatus] = useState('')
+  const [activeView, setActiveView] = useState('overview')
 
   function buildFinalResultPayload(match) {
     return {
@@ -119,26 +121,78 @@ function App() {
     }
   }
 
-  return (
-    <main>
-      <section>
-        <h1>KDM World Cup Simulator</h1>
-        <p>Consumo da API e sorteio dos grupos da Copa.</p>
+  function renderKnockoutMatches(matches) {
+    return (
+      <ul className="match-list">
+        {matches.map((match) => (
+          <li className="match-card" key={match.match}>
+            <span className="match-label">Jogo {match.match}</span>
+            <span>
+              {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
+            </span>
+            {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
+              <span className="penalties">
+                {match.team1Penalties} x {match.team2Penalties} nos pênaltis
+              </span>
+            ) : null}
+            <strong>Vencedor: {match.winner.nome}</strong>
+          </li>
+        ))}
+      </ul>
+    )
+  }
 
-        <button type="button" onClick={handleLoadTeams} disabled={isLoading}>
+  return (
+    <main className="app">
+      <section className="hero-section">
+        <p className="eyebrow">Katalyst Data Management</p>
+        <h1>KDM World Cup Simulator</h1>
+        <p>Consuma a API, sorteie os grupos, simule a Copa e envie o resultado final.</p>
+
+        <button className="primary-button" type="button" onClick={handleLoadTeams} disabled={isLoading}>
           {isLoading ? 'Carregando...' : 'Buscar seleções e sortear grupos'}
         </button>
 
-        {error && <p>{error}</p>}
+        {error && <p className="status-message error">{error}</p>}
       </section>
 
-      <section>
-        <h2>Seleções carregadas: {teams.length}</h2>
+      <nav className="view-switcher" aria-label="Alternar visualização">
+        <button
+          className={activeView === 'overview' ? 'view-button active' : 'view-button'}
+          type="button"
+          onClick={() => setActiveView('overview')}
+        >
+          Visão geral
+        </button>
+        <button
+          className={activeView === 'bracket' ? 'view-button active' : 'view-button'}
+          type="button"
+          onClick={() => setActiveView('bracket')}
+        >
+          Chaveamento
+        </button>
+      </nav>
+
+      {activeView === 'bracket' ? (
+        <BracketView
+          roundOf16={roundOf16}
+          quarterFinals={quarterFinals}
+          semifinals={semifinals}
+          finalMatch={finalMatch}
+          champion={champion}
+        />
+      ) : (
+        <>
+      <section className="section-card">
+        <div className="section-header">
+          <h2>Seleções carregadas</h2>
+          <span className="counter">{teams.length}</span>
+        </div>
 
         {teams.length === 0 ? (
-          <p>Nenhuma seleção carregada ainda.</p>
+          <p className="empty-state">Nenhuma seleção carregada ainda.</p>
         ) : (
-          <ul>
+          <ul className="teams-list">
             {teams.map((team) => (
               <li key={team.token}>{team.nome}</li>
             ))}
@@ -146,15 +200,15 @@ function App() {
         )}
       </section>
 
-      <section>
+      <section className="section-card">
         <h2>Grupos sorteados</h2>
 
         {groups.length === 0 ? (
-          <p>Nenhum grupo sorteado ainda.</p>
+          <p className="empty-state">Nenhum grupo sorteado ainda.</p>
         ) : (
-          <div>
+          <div className="groups-grid">
             {groups.map((group) => (
-              <article key={group.name}>
+              <article className="group-card" key={group.name}>
                 <h3>Grupo {group.name}</h3>
 
                 <ul>
@@ -168,22 +222,22 @@ function App() {
         )}
       </section>
 
-      <section>
+      <section className="section-card">
       <h2>Partidas da fase de grupos</h2>
 
       {groupMatches.length === 0 ? (
-        <p>Nenhuma partida gerada ainda.</p>
+        <p className="empty-state">Nenhuma partida gerada ainda.</p>
       ) : (
-        <div>
+        <div className="groups-grid">
           {groupMatches.map((groupMatch) => (
-            <article key={groupMatch.groupName}>
+            <article className="group-card" key={groupMatch.groupName}>
               <h3>Grupo {groupMatch.groupName}</h3>
 
               {groupMatch.rounds.map((round) => (
-                <div key={`${groupMatch.groupName}-${round.round}`}>
+                <div className="round-block" key={`${groupMatch.groupName}-${round.round}`}>
                   <h4>Rodada {round.round}</h4>
 
-                  <ul>
+                  <ul className="match-list compact">
                     {round.matches.map((match) => (
                       <li key={`${match.team1.token}-${match.team2.token}`}>
                         {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
@@ -198,18 +252,18 @@ function App() {
       )}
     </section>
 
-      <section>
+      <section className="section-card">
         <h2>Classificação dos grupos</h2>
 
         {groupStandings.length === 0 ? (
-          <p>Nenhuma classificação calculada ainda.</p>
+          <p className="empty-state">Nenhuma classificação calculada ainda.</p>
         ) : (
-          <div>
+          <div className="standings-grid">
             {groupStandings.map((groupStanding) => (
-              <article key={groupStanding.groupName}>
+              <article className="standings-card" key={groupStanding.groupName}>
                 <h3>Grupo {groupStanding.groupName}</h3>
 
-                <table>
+                <table className="standings-table">
                   <thead>
                     <tr>
                       <th>Posição</th>
@@ -226,7 +280,7 @@ function App() {
                   </thead>
                   <tbody>
                     {groupStanding.table.map((standing, index) => (
-                      <tr key={standing.team.token}>
+                      <tr className={index < 2 ? 'qualified-row' : ''} key={standing.team.token}>
                         <td>{index + 1}</td>
                         <td>{standing.team.nome}</td>
                         <td>{standing.points}</td>
@@ -247,110 +301,72 @@ function App() {
         )}
       </section>
 
-      <section>
+      <section className="section-card">
         <h2>Oitavas de final</h2>
 
         {roundOf16.length === 0 ? (
-          <p>Nenhum confronto definido ainda.</p>
+          <p className="empty-state">Nenhum confronto definido ainda.</p>
         ) : (
-          <ul>
-            {roundOf16.map((match) => (
-              <li key={match.match}>
-                Jogo {match.match}: {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
-                {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
-                  <span>
-                    {' '}
-                    ({match.team1Penalties} x {match.team2Penalties} nos pênaltis)
-                  </span>
-                ) : null}
-                <strong> - Vencedor: {match.winner.nome}</strong>
-              </li>
-            ))}
-          </ul>
+          renderKnockoutMatches(roundOf16)
         )}
       </section>
 
-      <section>
+      <section className="section-card">
         <h2>Quartas de final</h2>
 
         {quarterFinals.length === 0 ? (
-          <p>Nenhum confronto definido ainda.</p>
+          <p className="empty-state">Nenhum confronto definido ainda.</p>
         ) : (
-          <ul>
-            {quarterFinals.map((match) => (
-              <li key={match.match}>
-                Jogo {match.match}: {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
-                {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
-                  <span>
-                    {' '}
-                    ({match.team1Penalties} x {match.team2Penalties} nos pênaltis)
-                  </span>
-                ) : null}
-                <strong> - Vencedor: {match.winner.nome}</strong>
-              </li>
-            ))}
-          </ul>
+          renderKnockoutMatches(quarterFinals)
         )}
       </section>
 
-      <section>
+      <section className="section-card">
         <h2>Semifinais</h2>
 
         {semifinals.length === 0 ? (
-          <p>Nenhum confronto definido ainda.</p>
+          <p className="empty-state">Nenhum confronto definido ainda.</p>
         ) : (
-          <ul>
-            {semifinals.map((match) => (
-              <li key={match.match}>
-                Jogo {match.match}: {match.team1.nome} {match.team1Score} x{' '}
-                {match.team2Score} {match.team2.nome}
-                {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
-                  <span>
-                    {' '}
-                    ({match.team1Penalties} x {match.team2Penalties} nos pênaltis)
-                  </span>
-                ) : null}
-                <strong> - Vencedor: {match.winner.nome}</strong>
-              </li>
-            ))}
-          </ul>
+          renderKnockoutMatches(semifinals)
         )}
       </section>
 
-      <section>
+      <section className="section-card">
         <h2>Final</h2>
 
         {finalMatch.length === 0 ? (
-          <p>Nenhum confronto definido ainda.</p>
+          <p className="empty-state">Nenhum confronto definido ainda.</p>
         ) : (
-          <ul>
+          <ul className="match-list">
             {finalMatch.map((match) => (
-              <li key={match.match}>
-                {match.team1.nome} {match.team1Score} x {match.team2Score}{' '}
+              <li className="match-card final-match" key={match.match}>
+                <span>
+                  {match.team1.nome} {match.team1Score} x {match.team2Score}{' '}
                 {match.team2.nome}
+                </span>
                 {match.team1Penalties > 0 || match.team2Penalties > 0 ? (
-                  <span>
-                    {' '}
-                    ({match.team1Penalties} x {match.team2Penalties} nos pênaltis)
+                  <span className="penalties">
+                    {match.team1Penalties} x {match.team2Penalties} nos pênaltis
                   </span>
                 ) : null}
-                <strong> - Campeão: {match.winner.nome}</strong>
+                <strong>Campeão: {match.winner.nome}</strong>
               </li>
             ))}
           </ul>
         )}
       </section>
 
-      <section>
+      <section className="champion-section">
         <h2>Campeão</h2>
 
         {champion ? (
-          <p>{champion.nome}</p>
+          <p className="champion-name">{champion.nome}</p>
         ) : (
-          <p>Nenhum campeão definido ainda.</p>
+          <p className="empty-state">Nenhum campeão definido ainda.</p>
         )}
 
         <button
+          className="primary-button"
           type="button"
           onClick={handleSendFinalResult}
           disabled={!champion || isSendingFinalResult}
@@ -358,8 +374,10 @@ function App() {
           {isSendingFinalResult ? 'Enviando resultado...' : 'Enviar resultado final'}
         </button>
 
-        {finalResultStatus && <p>{finalResultStatus}</p>}
+        {finalResultStatus && <p className="status-message">{finalResultStatus}</p>}
       </section>
+        </>
+      )}
 
     </main>
   )
