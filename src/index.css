@@ -59,8 +59,16 @@ main {
 .champion-section {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
-  background: rgba(247, 243, 251, 0.9);
   box-shadow: var(--shadow);
+}
+
+.section-card,
+.champion-section {
+  border-color: rgba(234, 179, 8, 0.22);
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(234, 179, 8, 0.1), transparent 26%),
+    linear-gradient(140deg, rgba(22, 9, 24, 0.86), rgba(14, 19, 32, 0.86));
 }
 
 .hero-section {
@@ -113,7 +121,7 @@ h3 {
 
 h4 {
   margin-bottom: 8px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.64);
   font-size: 0.9rem;
   text-transform: uppercase;
 }
@@ -129,14 +137,14 @@ h4 {
   border: 0;
   border-radius: 8px;
   padding: 0 18px;
-  background: var(--primary);
-  color: #ffffff;
+  background: var(--gold);
+  color: #241800;
   cursor: pointer;
   font-weight: 800;
 }
 
 .primary-button:hover:not(:disabled) {
-  background: var(--primary-dark);
+  background: var(--gold-soft);
 }
 
 .primary-button:disabled {
@@ -181,18 +189,18 @@ h4 {
 
 .counter {
   min-width: 56px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(234, 179, 8, 0.3);
   border-radius: 999px;
   padding: 8px 12px;
-  background: var(--surface-muted);
-  color: var(--primary);
+  background: rgba(7, 4, 12, 0.58);
+  color: var(--gold-soft);
   font-weight: 800;
   text-align: center;
 }
 
 .empty-state,
 .status-message {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .status-message.error {
@@ -220,9 +228,10 @@ h4 {
 .group-card,
 .standings-card,
 .match-card {
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  background: var(--surface);
+  background: rgba(7, 4, 12, 0.58);
+  color: rgba(255, 255, 255, 0.84);
 }
 
 .group-card,
@@ -232,13 +241,13 @@ h4 {
 
 .group-card h3,
 .standings-card h3 {
-  color: var(--primary-dark);
+  color: var(--gold-soft);
 }
 
 .round-block + .round-block {
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .match-list {
@@ -254,11 +263,11 @@ h4 {
 }
 
 .match-list.compact li {
-  color: var(--text);
+  color: rgba(255, 255, 255, 0.84);
 }
 
 .group-match-winner {
-  color: var(--success-dark);
+  color: var(--teal);
   font-weight: 800;
 }
 
@@ -270,17 +279,19 @@ h4 {
 
 .match-label,
 .penalties {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.62);
   font-size: 0.9rem;
 }
 
 .match-card strong {
-  color: var(--success-dark);
+  color: var(--teal);
 }
 
 .final-match {
   border-color: rgba(234, 179, 8, 0.48);
-  background: #fffbeb;
+  background:
+    linear-gradient(135deg, rgba(234, 179, 8, 0.16), transparent),
+    rgba(7, 4, 12, 0.72);
 }
 
 .standings-card {
@@ -295,37 +306,37 @@ h4 {
 
 .standings-table th,
 .standings-table td {
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 9px 8px;
   text-align: left;
   white-space: nowrap;
 }
 
 .standings-table th {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.58);
   font-size: 0.76rem;
   text-transform: uppercase;
 }
 
 .qualified-row {
-  background: var(--success-soft);
+  background: rgba(110, 215, 200, 0.12);
 }
 
 .qualified-row td:first-child {
-  color: var(--success-dark);
+  color: var(--teal);
   font-weight: 800;
 }
 
 .champion-section {
   border-color: rgba(234, 179, 8, 0.48);
   background:
-    linear-gradient(135deg, rgba(234, 179, 8, 0.16), transparent),
-    var(--surface);
+    radial-gradient(circle at 50% 0%, rgba(234, 179, 8, 0.18), transparent 30%),
+    linear-gradient(140deg, rgba(22, 9, 24, 0.88), rgba(14, 19, 32, 0.88));
 }
 
 .champion-name {
   margin-bottom: 18px;
-  color: #9a6a00;
+  color: var(--gold-soft);
   font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 900;
 }
@@ -828,10 +839,6 @@ h4 {
   margin: 12px 0 0 calc(50% - 50vw + 14px);
   padding: 0 0 34px;
   color: #ffffff;
-}
-
-.bracket-submit-section .primary-button:hover:not(:disabled) {
-  background: #6d28d9;
 }
 
 .bracket-submit-section .status-message {
