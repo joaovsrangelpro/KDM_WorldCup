@@ -3,18 +3,26 @@
 }
 
 :root {
-  --bg: #f3f6fb;
-  --surface: #ffffff;
-  --surface-muted: #eef3f8;
-  --text: #182231;
-  --muted: #647389;
-  --line: #d9e1eb;
-  --primary: #0f766e;
-  --primary-dark: #0b5f59;
-  --accent: #c93f3f;
-  --success: #167446;
-  --warning: #a45d10;
-  --shadow: 0 18px 45px rgba(20, 35, 54, 0.11);
+  --bg: #160918;
+  --surface: #f7f3fb;
+  --surface-muted: #efe7f7;
+  --text: #172033;
+  --muted: #687386;
+  --line: #ded3ea;
+  --worldcup-deep: #26102f;
+  --worldcup-purple: #4c1d95;
+  --worldcup-plum: #321124;
+  --gold: #eab308;
+  --gold-soft: #f7d56b;
+  --primary: var(--worldcup-purple);
+  --primary-dark: var(--worldcup-deep);
+  --accent: #b91c1c;
+  --success: #22c55e;
+  --success-soft: #dcfce7;
+  --success-dark: #166534;
+  --teal: #6ed7c8;
+  --warning: var(--gold);
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -22,9 +30,12 @@
 body {
   margin: 0;
   background:
-    linear-gradient(135deg, rgba(15, 118, 110, 0.12), transparent 30%),
-    linear-gradient(315deg, rgba(201, 63, 63, 0.11), transparent 28%),
+    radial-gradient(circle at 50% 8%, rgba(234, 179, 8, 0.14), transparent 28%),
+    radial-gradient(circle at 10% 22%, rgba(76, 29, 149, 0.32), transparent 24%),
+    radial-gradient(circle at 88% 52%, rgba(110, 215, 200, 0.08), transparent 22%),
+    linear-gradient(140deg, #160918 0%, var(--worldcup-plum) 48%, #0e1320 100%),
     var(--bg);
+  background-attachment: fixed;
   color: var(--text);
 }
 
@@ -46,17 +57,18 @@ main {
 .hero-section,
 .section-card,
 .champion-section {
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(247, 243, 251, 0.9);
   box-shadow: var(--shadow);
 }
 
 .hero-section {
+  border-color: rgba(234, 179, 8, 0.24);
   padding: 40px;
   color: #ffffff;
   background:
-    linear-gradient(90deg, rgba(14, 24, 37, 0.9), rgba(14, 24, 37, 0.58)),
+    linear-gradient(90deg, rgba(22, 9, 24, 0.94), rgba(50, 17, 36, 0.72)),
     url("https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1600&q=80")
       center/cover;
 }
@@ -136,11 +148,12 @@ h4 {
   display: inline-flex;
   width: fit-content;
   gap: 4px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
   padding: 4px;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
 }
 
 .view-button {
@@ -149,14 +162,14 @@ h4 {
   border-radius: 6px;
   padding: 0 14px;
   background: transparent;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.78);
   cursor: pointer;
   font-weight: 800;
 }
 
 .view-button.active {
-  background: var(--primary);
-  color: #ffffff;
+  background: var(--gold);
+  color: #241800;
 }
 
 .section-header {
@@ -172,7 +185,7 @@ h4 {
   border-radius: 999px;
   padding: 8px 12px;
   background: var(--surface-muted);
-  color: var(--primary-dark);
+  color: var(--primary);
   font-weight: 800;
   text-align: center;
 }
@@ -245,7 +258,7 @@ h4 {
 }
 
 .group-match-winner {
-  color: #1b8956;
+  color: var(--success-dark);
   font-weight: 800;
 }
 
@@ -262,12 +275,12 @@ h4 {
 }
 
 .match-card strong {
-  color: var(--success);
+  color: var(--success-dark);
 }
 
 .final-match {
-  border-color: rgba(15, 118, 110, 0.35);
-  background: #f4fbf8;
+  border-color: rgba(234, 179, 8, 0.48);
+  background: #fffbeb;
 }
 
 .standings-card {
@@ -295,24 +308,24 @@ h4 {
 }
 
 .qualified-row {
-  background: #f1faf6;
+  background: var(--success-soft);
 }
 
 .qualified-row td:first-child {
-  color: var(--success);
+  color: var(--success-dark);
   font-weight: 800;
 }
 
 .champion-section {
-  border-color: rgba(15, 118, 110, 0.35);
+  border-color: rgba(234, 179, 8, 0.48);
   background:
-    linear-gradient(135deg, rgba(15, 118, 110, 0.1), transparent),
+    linear-gradient(135deg, rgba(234, 179, 8, 0.16), transparent),
     var(--surface);
 }
 
 .champion-name {
   margin-bottom: 18px;
-  color: var(--primary-dark);
+  color: #9a6a00;
   font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 900;
 }
@@ -343,7 +356,7 @@ h4 {
 }
 
 .bracket-view {
-  border: 1px solid rgba(15, 118, 110, 0.26);
+  border: 1px solid rgba(234, 179, 8, 0.22);
   border-right: 0;
   border-left: 0;
   border-radius: 0;
@@ -351,9 +364,9 @@ h4 {
   margin-left: calc(50% - 50vw);
   padding: 0;
   background:
-    radial-gradient(circle at 50% 8%, rgba(201, 63, 63, 0.28), transparent 30%),
-    radial-gradient(circle at 50% 45%, rgba(45, 212, 191, 0.08), transparent 18%),
-    linear-gradient(140deg, #160918 0%, #321124 48%, #0e1320 100%);
+    radial-gradient(circle at 50% 8%, rgba(234, 179, 8, 0.14), transparent 28%),
+    radial-gradient(circle at 50% 45%, rgba(110, 215, 200, 0.08), transparent 18%),
+    linear-gradient(140deg, #160918 0%, var(--worldcup-plum) 48%, #0e1320 100%);
   color: #ffffff;
   box-shadow: var(--shadow);
   overflow: hidden;
@@ -380,7 +393,7 @@ h4 {
   display: block;
   width: 100%;
   min-width: 0;
-  height: 930px;
+  height: 820px;
   margin: 0 auto;
 }
 
@@ -395,7 +408,7 @@ h4 {
 
 .bracket-lines path {
   fill: none;
-  stroke: rgba(45, 212, 191, 0.76);
+  stroke: rgba(110, 215, 200, 0.76);
   stroke-linecap: square;
   stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
@@ -441,7 +454,7 @@ h4 {
 }
 
 .label-third-place {
-  top: 74%;
+  top: 72%;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -506,7 +519,7 @@ h4 {
 }
 
 .slot-third-place {
-  top: 78%;
+  top: 76%;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -602,12 +615,12 @@ h4 {
 
 .bracket-team.winner {
   color: #073a35;
-  background: #6ed7c8;
+  background: var(--teal);
 }
 
 .bracket-team.champion-team {
   color: #241800;
-  background: linear-gradient(135deg, #f7d56b, #d7a72f);
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
   box-shadow: 0 0 18px rgba(247, 213, 107, 0.26);
 }
 
