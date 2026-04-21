@@ -1,4 +1,7 @@
+import flags from 'react-world-flags/src/flags'
+
 import { getTeamCode } from '../data/teamCodes'
+import { getTeamFlagCode } from '../data/teamFlagCodes'
 
 function getPenaltyText(match) {
   if (match.team1Penalties === 0 && match.team2Penalties === 0) {
@@ -10,6 +13,8 @@ function getPenaltyText(match) {
 
 function BracketTeam({ team, score, isWinner, isChampion }) {
   const teamCode = getTeamCode(team.nome)
+  const flagCode = getTeamFlagCode(teamCode)
+  const flagSrc = flags[`flag_${flagCode.replace('-', '_')}`]
   const teamClassName = [
     'bracket-team',
     isWinner ? 'winner' : '',
@@ -20,6 +25,13 @@ function BracketTeam({ team, score, isWinner, isChampion }) {
 
   return (
     <div className={teamClassName}>
+      <span className="team-flag-frame">
+        {flagSrc ? (
+          <img className="team-flag" src={flagSrc} alt={`Bandeira ${teamCode}`} />
+        ) : (
+          <span className="team-flag-fallback">{teamCode}</span>
+        )}
+      </span>
       <span className="team-name">{teamCode}</span>
       <strong className="team-score">{score}</strong>
     </div>

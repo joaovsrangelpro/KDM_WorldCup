@@ -584,44 +584,111 @@ h4 {
 }
 
 .bracket-team {
-  display: flex;
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px minmax(48px, 1fr) 26px;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-height: 40px;
-  border-radius: 2px;
-  padding: 8px 10px;
+  gap: 5px;
+  min-height: 34px;
+  padding: 0;
   color: rgba(255, 255, 255, 0.72);
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
   font-weight: 900;
   font-size: clamp(0.84rem, 0.9vw, 1rem);
 }
 
+.team-flag-frame {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  background: #ffffff;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.28));
+}
+
+.team-flag {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.team-flag-fallback {
+  color: var(--text);
+  font-size: 0.5rem;
+  line-height: 1;
+}
+
 .team-name {
+  position: relative;
   flex: 1;
-  overflow: visible;
-  line-height: 1.2;
+  min-width: 0;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  overflow: hidden;
+  line-height: 1;
   text-overflow: unset;
-  white-space: normal;
-  word-break: break-word;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.68);
+  background: rgba(7, 4, 12, 0.64);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .team-score {
   flex: 0 0 auto;
-  min-width: 22px;
+  min-width: 26px;
+  color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
-  text-align: right;
+  text-align: center;
 }
 
 .bracket-team.winner {
   color: #073a35;
+  background: transparent;
+}
+
+.bracket-team.winner .team-name {
+  color: #073a35;
   background: var(--teal);
+}
+
+.bracket-team.winner .team-name::after {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  width: 16px;
+  height: 100%;
+  content: '';
+  background: inherit;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
 .bracket-team.champion-team {
   color: #241800;
+  background: transparent;
+}
+
+.bracket-team.champion-team .team-name {
+  color: #241800;
   background: linear-gradient(135deg, var(--gold-soft), var(--gold));
   box-shadow: 0 0 18px rgba(247, 213, 107, 0.26);
+}
+
+.bracket-team.champion-team .team-name::after {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  width: 16px;
+  height: 100%;
+  content: '';
+  background: var(--gold);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
 .bracket-view .match-label,
