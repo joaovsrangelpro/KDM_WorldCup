@@ -11,12 +11,13 @@ function getPenaltyText(match) {
   return `${match.team1Penalties} x ${match.team2Penalties} nos pênaltis`
 }
 
-function BracketTeam({ team, score, isWinner, isChampion }) {
+function BracketSide({ team, side, isWinner, isChampion }) {
   const teamCode = getTeamCode(team.nome)
   const flagCode = getTeamFlagCode(teamCode)
   const flagSrc = flags[`flag_${flagCode.replace('-', '_')}`]
   const teamClassName = [
-    'bracket-team',
+    'bracket-side',
+    `side-${side}`,
     isWinner ? 'winner' : '',
     isChampion ? 'champion-team' : '',
   ]
@@ -33,7 +34,6 @@ function BracketTeam({ team, score, isWinner, isChampion }) {
         )}
       </span>
       <span className="team-name">{teamCode}</span>
-      <strong className="team-score">{score}</strong>
     </div>
   )
 }
@@ -41,22 +41,31 @@ function BracketTeam({ team, score, isWinner, isChampion }) {
 function BracketMatch({ match, champion }) {
   const penaltyText = getPenaltyText(match)
   const championToken = champion?.token
+  const team1Wins = match.winner.token === match.team1.token
+  const team2Wins = match.winner.token === match.team2.token
 
   return (
     <article className="bracket-match">
       <span className="match-label">Jogo {match.match}</span>
-      <BracketTeam
-        team={match.team1}
-        score={match.team1Score}
-        isWinner={match.winner.token === match.team1.token}
-        isChampion={championToken === match.team1.token}
-      />
-      <BracketTeam
-        team={match.team2}
-        score={match.team2Score}
-        isWinner={match.winner.token === match.team2.token}
-        isChampion={championToken === match.team2.token}
-      />
+      <div className="scoreboard-row">
+        <BracketSide
+          team={match.team1}
+          side="left"
+          isWinner={team1Wins}
+          isChampion={championToken === match.team1.token}
+        />
+        <strong className="match-score">
+          <span>{match.team1Score}</span>
+          <span className="score-separator">◆</span>
+          <span>{match.team2Score}</span>
+        </strong>
+        <BracketSide
+          team={match.team2}
+          side="right"
+          isWinner={team2Wins}
+          isChampion={championToken === match.team2.token}
+        />
+      </div>
       {penaltyText ? <span className="penalties">{penaltyText}</span> : null}
     </article>
   )
@@ -106,23 +115,23 @@ export default function BracketView({
             aria-hidden="true"
             focusable="false"
           >
-            <path d="M10 15 H20 V25 H26" />
-            <path d="M10 35 H20 V25 H26" />
-            <path d="M10 65 H20 V75 H26" />
-            <path d="M10 85 H20 V75 H26" />
+            <path d="M11 15 H19 V25 H25" />
+            <path d="M11 35 H19 V25 H25" />
+            <path d="M11 65 H19 V75 H25" />
+            <path d="M11 85 H19 V75 H25" />
 
-            <path d="M29 25 H34 V56 H40" />
-            <path d="M29 75 H34 V56 H40" />
-            <path d="M43 56 H57" />
-            <path d="M50 24 V56" />
+            <path d="M31 25 H34 V52 H40" />
+            <path d="M31 75 H34 V52 H40" />
+            <path d="M43 52 H57" />
+            <path d="M51 27 V52" />
 
-            <path d="M90 15 H80 V25 H74" />
-            <path d="M90 35 H80 V25 H74" />
-            <path d="M90 65 H80 V75 H74" />
-            <path d="M90 85 H80 V75 H74" />
+            <path d="M89 15 H81 V25 H75" />
+            <path d="M89 35 H81 V25 H75" />
+            <path d="M89 65 H81 V75 H75" />
+            <path d="M89 85 H81 V75 H75" />
 
-            <path d="M71 25 H66 V56 H60" />
-            <path d="M71 75 H66 V56 H60" />
+            <path d="M69 25 H66 V52 H60" />
+            <path d="M69 75 H66 V52 H60" />
           </svg>
 
           <StageLabel className="label-left-r16">Oitavas</StageLabel>

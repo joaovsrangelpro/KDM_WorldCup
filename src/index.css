@@ -330,39 +330,16 @@ h4 {
   font-weight: 900;
 }
 
-@media (max-width: 720px) {
-  .app {
-    padding: 22px 0;
-  }
-
-  .hero-section,
-  .section-card,
-  .champion-section {
-    padding: 20px;
-  }
-
-  .section-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .view-switcher {
-    width: 100%;
-  }
-
-  .view-button {
-    flex: 1;
-  }
-}
-
 .bracket-view {
   border: 1px solid rgba(234, 179, 8, 0.22);
   border-right: 0;
   border-left: 0;
   border-radius: 0;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: calc(100vw - 28px);
+  max-width: none;
+  margin: 0 0 0 calc(50% - 50vw + 14px);
   padding: 0;
+  box-sizing: border-box;
   background:
     radial-gradient(circle at 50% 8%, rgba(234, 179, 8, 0.14), transparent 28%),
     radial-gradient(circle at 50% 45%, rgba(110, 215, 200, 0.08), transparent 18%),
@@ -370,7 +347,7 @@ h4 {
   color: #ffffff;
   box-shadow: var(--shadow);
   overflow: hidden;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: auto;
 
 }
@@ -386,8 +363,8 @@ h4 {
 }
 
 .bracket-board {
-  --edge-gap: clamp(10px, 3.6vw, 56px);
-  --match-width: clamp(168px, 12vw, 210px);
+  --edge-gap: clamp(12px, 1.4vw, 28px);
+  --match-width: clamp(176px, 10vw, 206px);
 
   position: relative;
   display: block;
@@ -439,12 +416,12 @@ h4 {
 
 .label-left-qtr {
   top: 14.8%;
-  left: 21%;
+  left: 18%;
 }
 
 .label-left-semi {
   top: 43%;
-  left: 35%;
+  left: 32%;
 }
 
 .label-final {
@@ -461,13 +438,13 @@ h4 {
 
 .label-right-semi {
   top: 43%;
-  right: 35%;
+  right: 32%;
   left: auto;
 }
 
 .label-right-qtr {
   top: 14.8%;
-  right: 21%;
+  right: 18%;
   left: auto;
 }
 
@@ -499,17 +476,17 @@ h4 {
 
 .slot-left-qtr-1 {
   top: 19.2%;
-  left: 21%;
+  left: 18%;
 }
 
 .slot-left-qtr-2 {
   top: 69.2%;
-  left: 21%;
+  left: 18%;
 }
 
 .slot-left-semi {
   top: 47.4%;
-  left: 35%;
+  left: 32%;
 }
 
 .slot-final {
@@ -526,19 +503,19 @@ h4 {
 
 .slot-right-semi {
   top: 47.4%;
-  right: 35%;
+  right: 32%;
   left: auto;
 }
 
 .slot-right-qtr-1 {
   top: 19.2%;
-  right: 21%;
+  right: 18%;
   left: auto;
 }
 
 .slot-right-qtr-2 {
   top: 69.2%;
-  right: 21%;
+  right: 18%;
   left: auto;
 }
 
@@ -569,40 +546,66 @@ h4 {
 .bracket-match {
   position: relative;
   display: grid;
-  gap: 6px;
+  gap: 5px;
   width: 100%;
   min-width: 0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
-  padding: 12px;
-  background: rgba(10, 6, 15, 0.84);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .bracket-match::after {
   display: none;
 }
 
-.bracket-team {
+.scoreboard-row {
   position: relative;
-  display: grid;
-  grid-template-columns: 30px minmax(48px, 1fr) 26px;
+  display: flex;
   align-items: center;
-  gap: 5px;
-  min-height: 34px;
-  padding: 0;
-  color: rgba(255, 255, 255, 0.72);
-  background: transparent;
+  justify-content: center;
+  width: 100%;
+  min-height: 32px;
+  overflow: visible;
+}
+
+.scoreboard-row::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: '';
+  background: rgba(22, 9, 24, 0.78);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.bracket-side {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: center;
+  z-index: 2;
   font-weight: 900;
   font-size: clamp(0.84rem, 0.9vw, 1rem);
 }
 
+.side-left {
+  justify-content: flex-start;
+}
+
+.side-right {
+  justify-content: flex-end;
+}
+
 .team-flag-frame {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
-  width: 30px;
-  height: 30px;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: 26px;
+  height: 26px;
   place-items: center;
   background: #ffffff;
   clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
@@ -610,8 +613,10 @@ h4 {
 }
 
 .team-flag {
-  width: 24px;
-  height: 24px;
+  position: absolute;
+  inset: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
   object-fit: cover;
   clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
 }
@@ -624,41 +629,69 @@ h4 {
 
 .team-name {
   position: relative;
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
   min-height: 30px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 10px;
   overflow: hidden;
   line-height: 1;
-  text-overflow: unset;
+  text-overflow: clip;
   white-space: nowrap;
   color: rgba(255, 255, 255, 0.68);
-  background: rgba(7, 4, 12, 0.64);
+  background: rgba(7, 4, 12, 0.96);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.team-score {
+.side-left .team-flag-frame {
+  margin-right: -6px;
+}
+
+.side-left .team-name {
+  justify-content: flex-start;
+  padding-left: 16px;
+}
+
+.side-right .team-flag-frame {
+  order: 2;
+  margin-left: -6px;
+}
+
+.side-right .team-name {
+  justify-content: flex-end;
+  padding-right: 16px;
+}
+
+.match-score {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
   flex: 0 0 auto;
-  min-width: 26px;
+  min-width: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 8px;
+  background: rgba(7, 4, 12, 0.96);
   color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   text-align: center;
 }
 
-.bracket-team.winner {
-  color: #073a35;
-  background: transparent;
+.score-separator {
+  color: var(--teal);
+  font-size: 0.48rem;
 }
 
-.bracket-team.winner .team-name {
+.bracket-side.winner .team-name {
   color: #073a35;
   background: var(--teal);
 }
 
-.bracket-team.winner .team-name::after {
+.bracket-side.winner.side-left .team-name::after {
   position: absolute;
   top: 0;
   right: -10px;
@@ -669,18 +702,24 @@ h4 {
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
-.bracket-team.champion-team {
-  color: #241800;
-  background: transparent;
+.bracket-side.winner.side-right .team-name::before {
+  position: absolute;
+  top: 0;
+  left: -10px;
+  width: 16px;
+  height: 100%;
+  content: '';
+  background: inherit;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 
-.bracket-team.champion-team .team-name {
+.bracket-side.champion-team .team-name {
   color: #241800;
   background: linear-gradient(135deg, var(--gold-soft), var(--gold));
   box-shadow: 0 0 18px rgba(247, 213, 107, 0.26);
 }
 
-.bracket-team.champion-team .team-name::after {
+.bracket-side.champion-team.side-left .team-name::after {
   position: absolute;
   top: 0;
   right: -10px;
@@ -691,6 +730,17 @@ h4 {
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
+.bracket-side.champion-team.side-right .team-name::before {
+  position: absolute;
+  top: 0;
+  left: -10px;
+  width: 16px;
+  height: 100%;
+  content: '';
+  background: var(--gold-soft);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
 .bracket-view .match-label,
 .bracket-view .penalties,
 .bracket-view .empty-state {
@@ -698,33 +748,9 @@ h4 {
 }
 
 .bracket-view .penalties {
+  display: block;
+  overflow: visible;
   line-height: 1.2;
-}
-
-@media (max-width: 720px) {
-  .bracket-view {
-    padding: 0;
-  }
-
-  .bracket-board {
-    display: grid;
-    width: auto;
-    min-width: 0;
-    height: auto;
-    gap: 12px;
-  }
-
-  .bracket-lines,
-  .bracket-stage-label {
-    display: none;
-  }
-
-  .bracket-slot {
-    position: static;
-    width: 100%;
-  }
-
-  .slot-final {
-    order: -1;
-  }
+  text-overflow: unset;
+  white-space: nowrap;
 }
