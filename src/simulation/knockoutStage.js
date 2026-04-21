@@ -122,3 +122,17 @@ export function generateNextKnockoutRound(previousRoundMatches) {
 
   return nextRoundMatches
 }
+
+export function generateThirdPlaceMatch(semifinalMatches) {
+  const semifinalLosers = semifinalMatches.map((match) =>
+    match.winner.token === match.team1.token ? match.team2 : match.team1,
+  )
+
+  return [
+    {
+      match: 1,
+      team1: semifinalLosers[0],
+      team2: semifinalLosers[1],
+    },
+  ]
+}
