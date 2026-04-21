@@ -38,7 +38,7 @@ function BracketSide({ team, side, isWinner, isChampion }) {
   )
 }
 
-function BracketMatch({ match, champion }) {
+function BracketMatch({ match, champion, showLabel = true }) {
   const penaltyText = getPenaltyText(match)
   const championToken = champion?.token
   const team1Wins = match.winner.token === match.team1.token
@@ -46,7 +46,7 @@ function BracketMatch({ match, champion }) {
 
   return (
     <article className="bracket-match">
-      <span className="match-label">Jogo {match.match}</span>
+      {showLabel ? <span className="match-label">Jogo {match.match}</span> : null}
       <div className="scoreboard-row">
         <BracketSide
           team={match.team1}
@@ -71,14 +71,14 @@ function BracketMatch({ match, champion }) {
   )
 }
 
-function BracketSlot({ match, className, champion }) {
+function BracketSlot({ match, className, champion, showLabel = true }) {
   if (!match) {
     return null
   }
 
   return (
     <div className={`bracket-slot ${className}`}>
-      <BracketMatch match={match} champion={champion} />
+      <BracketMatch match={match} champion={champion} showLabel={showLabel} />
     </div>
   )
 }
@@ -130,8 +130,8 @@ export default function BracketView({
             <path d="M89 65 H81 V75 H75" />
             <path d="M89 85 H81 V75 H75" />
 
-            <path d="M69 25 H66 V52 H60" />
-            <path d="M69 75 H66 V52 H60" />
+            <path d="M71 25 H66 V52 H60" />
+            <path d="M71 75 H66 V52 H60" />
           </svg>
 
           <StageLabel className="label-left-r16">Oitavas</StageLabel>
@@ -143,8 +143,18 @@ export default function BracketView({
           <StageLabel className="label-right-qtr">Quartas</StageLabel>
           <StageLabel className="label-right-r16">Oitavas</StageLabel>
 
-          <BracketSlot match={finalMatch[0]} className="slot-final" champion={champion} />
-          <BracketSlot match={thirdPlaceMatch[0]} className="slot-third-place" champion={champion} />
+          <BracketSlot
+            match={finalMatch[0]}
+            className="slot-final"
+            champion={champion}
+            showLabel={false}
+          />
+          <BracketSlot
+            match={thirdPlaceMatch[0]}
+            className="slot-third-place"
+            champion={champion}
+            showLabel={false}
+          />
 
           <BracketSlot match={semifinals[0]} className="slot-left-semi" champion={champion} />
           <BracketSlot match={semifinals[1]} className="slot-right-semi" champion={champion} />

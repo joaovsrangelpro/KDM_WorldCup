@@ -363,8 +363,8 @@ h4 {
 }
 
 .bracket-board {
-  --edge-gap: clamp(12px, 1.4vw, 28px);
-  --match-width: clamp(176px, 10vw, 206px);
+  --edge-gap: clamp(24px, 1.8vw, 40px);
+  --match-width: clamp(190px, 10.8vw, 222px);
 
   position: relative;
   display: block;
@@ -416,35 +416,35 @@ h4 {
 
 .label-left-qtr {
   top: 14.8%;
-  left: 18%;
+  left: 21%;
 }
 
 .label-left-semi {
   top: 43%;
-  left: 32%;
+  left: 36%;
 }
 
 .label-final {
   top: 18%;
-  left: 50%;
+  left: 51%;
   transform: translateX(-50%);
 }
 
 .label-third-place {
   top: 72%;
-  left: 50%;
+  left: 51%;
   transform: translateX(-50%);
 }
 
 .label-right-semi {
   top: 43%;
-  right: 32%;
+  right: 36%;
   left: auto;
 }
 
 .label-right-qtr {
   top: 14.8%;
-  right: 18%;
+  right: 21%;
   left: auto;
 }
 
@@ -567,6 +567,7 @@ h4 {
   justify-content: center;
   width: 100%;
   min-height: 32px;
+  padding: 0 10px;
   overflow: visible;
 }
 
@@ -646,22 +647,23 @@ h4 {
 }
 
 .side-left .team-flag-frame {
-  margin-right: -6px;
+  margin-right: -4px;
 }
 
 .side-left .team-name {
   justify-content: flex-start;
-  padding-left: 16px;
+  padding-left: 14px;
 }
 
 .side-right .team-flag-frame {
   order: 2;
-  margin-left: -6px;
+  margin-left: -18px;
+  margin-right: 8px;
 }
 
 .side-right .team-name {
   justify-content: flex-end;
-  padding-right: 16px;
+  padding-right: 28px;
 }
 
 .match-score {
