@@ -244,6 +244,11 @@ h4 {
   color: var(--text);
 }
 
+.group-match-winner {
+  color: #1b8956;
+  font-weight: 800;
+}
+
 .match-card {
   display: grid;
   gap: 5px;
@@ -583,6 +588,12 @@ h4 {
 .bracket-team.winner {
   color: #073a35;
   background: #6ed7c8;
+}
+
+.bracket-team.champion-team {
+  color: #241800;
+  background: linear-gradient(135deg, #f7d56b, #d7a72f);
+  box-shadow: 0 0 18px rgba(247, 213, 107, 0.26);
 }
 
 .bracket-view .match-label,

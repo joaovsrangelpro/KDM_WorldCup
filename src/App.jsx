@@ -142,6 +142,19 @@ function App() {
     )
   }
 
+  function renderGroupMatch(match) {
+    const team1Won = match.team1Score > match.team2Score
+    const team2Won = match.team2Score > match.team1Score
+
+    return (
+      <>
+        <span className={team1Won ? 'group-match-winner' : ''}>{match.team1.nome}</span>{' '}
+        {match.team1Score} x {match.team2Score}{' '}
+        <span className={team2Won ? 'group-match-winner' : ''}>{match.team2.nome}</span>
+      </>
+    )
+  }
+
   return (
     <main className="app">
       <section className="hero-section">
@@ -240,7 +253,7 @@ function App() {
                   <ul className="match-list compact">
                     {round.matches.map((match) => (
                       <li key={`${match.team1.token}-${match.team2.token}`}>
-                        {match.team1.nome} {match.team1Score} x {match.team2Score} {match.team2.nome}
+                        {renderGroupMatch(match)}
                       </li>
                     ))}
                   </ul>
@@ -266,15 +279,9 @@ function App() {
                 <table className="standings-table">
                   <thead>
                     <tr>
-                      <th>Posição</th>
+                      <th>Pos</th>
                       <th>Seleção</th>
-                      <th>Pontos</th>
-                      <th>Jogos</th>
-                      <th>Vitórias</th>
-                      <th>Empates</th>
-                      <th>Derrotas</th>
-                      <th>GP</th>
-                      <th>GC</th>
+                      <th>Pts</th>
                       <th>Saldo</th>
                     </tr>
                   </thead>
@@ -284,12 +291,6 @@ function App() {
                         <td>{index + 1}</td>
                         <td>{standing.team.nome}</td>
                         <td>{standing.points}</td>
-                        <td>{standing.games}</td>
-                        <td>{standing.wins}</td>
-                        <td>{standing.draws}</td>
-                        <td>{standing.losses}</td>
-                        <td>{standing.goalsFor}</td>
-                        <td>{standing.goalsAgainst}</td>
                         <td>{standing.goalDifference}</td>
                       </tr>
                     ))}
