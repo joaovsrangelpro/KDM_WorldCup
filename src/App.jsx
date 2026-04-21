@@ -12,6 +12,7 @@ import {
 import {
   generateNextKnockoutRound,
   generateRoundOf16,
+  generateThirdPlaceMatch,
   simulateKnockoutMatches,
 } from './simulation/knockoutStage'
 
@@ -23,6 +24,7 @@ function App() {
   const [roundOf16, setRoundOf16] = useState([])
   const [quarterFinals, setQuarterFinals] = useState([])
   const [semifinals, setSemifinals] = useState([])
+  const [thirdPlaceMatch, setThirdPlaceMatch] = useState([])
   const [finalMatch, setFinalMatch] = useState([])
   const [champion, setChampion] = useState(null)
 
@@ -65,6 +67,9 @@ function App() {
       const semifinalMatches = generateNextKnockoutRound(simulatedQuarterFinalMatches)
       const simulatedSemifinalMatches = simulateKnockoutMatches(semifinalMatches)
 
+      const thirdPlaceMatches = generateThirdPlaceMatch(simulatedSemifinalMatches)
+      const simulatedThirdPlaceMatches = simulateKnockoutMatches(thirdPlaceMatches)
+
       const finalMatches = generateNextKnockoutRound(simulatedSemifinalMatches)
       const simulatedFinalMatches = simulateKnockoutMatches(finalMatches)
 
@@ -86,6 +91,7 @@ function App() {
       setRoundOf16(simulatedRoundOf16Matches)
       setQuarterFinals(simulatedQuarterFinalMatches)
       setSemifinals(simulatedSemifinalMatches)
+      setThirdPlaceMatch(simulatedThirdPlaceMatches)
       setFinalMatch(simulatedFinalMatches)
       setChampion(tournamentChampion)
 
@@ -191,6 +197,7 @@ function App() {
           roundOf16={roundOf16}
           quarterFinals={quarterFinals}
           semifinals={semifinals}
+          thirdPlaceMatch={thirdPlaceMatch}
           finalMatch={finalMatch}
           champion={champion}
         />
@@ -329,6 +336,16 @@ function App() {
           <p className="empty-state">Nenhum confronto definido ainda.</p>
         ) : (
           renderKnockoutMatches(semifinals)
+        )}
+      </section>
+
+      <section className="section-card">
+        <h2>Terceiro lugar</h2>
+
+        {thirdPlaceMatch.length === 0 ? (
+          <p className="empty-state">Nenhum confronto definido ainda.</p>
+        ) : (
+          renderKnockoutMatches(thirdPlaceMatch)
         )}
       </section>
 

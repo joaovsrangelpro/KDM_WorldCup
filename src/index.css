@@ -357,6 +357,9 @@ h4 {
   color: #ffffff;
   box-shadow: var(--shadow);
   overflow: hidden;
+  overflow-x: auto;
+  overflow-y: auto;
+
 }
 
 .bracket-title {
@@ -377,7 +380,7 @@ h4 {
   display: block;
   width: 100%;
   min-width: 0;
-  height: 820px;
+  height: 930px;
   margin: 0 auto;
 }
 
@@ -437,6 +440,12 @@ h4 {
   transform: translateX(-50%);
 }
 
+.label-third-place {
+  top: 74%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .label-right-semi {
   top: 43%;
   right: 35%;
@@ -492,6 +501,12 @@ h4 {
 
 .slot-final {
   top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slot-third-place {
+  top: 78%;
   left: 50%;
   transform: translateX(-50%);
 }

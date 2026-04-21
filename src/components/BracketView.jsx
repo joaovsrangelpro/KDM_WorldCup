@@ -67,6 +67,7 @@ export default function BracketView({
   roundOf16,
   quarterFinals,
   semifinals,
+  thirdPlaceMatch,
   finalMatch,
   champion,
 }) {
@@ -113,11 +114,13 @@ export default function BracketView({
           <StageLabel className="label-left-qtr">Quartas</StageLabel>
           <StageLabel className="label-left-semi">Semi</StageLabel>
           <StageLabel className="label-final">Final</StageLabel>
+          <StageLabel className="label-third-place">Terceiro lugar</StageLabel>
           <StageLabel className="label-right-semi">Semi</StageLabel>
           <StageLabel className="label-right-qtr">Quartas</StageLabel>
           <StageLabel className="label-right-r16">Oitavas</StageLabel>
 
           <BracketSlot match={finalMatch[0]} className="slot-final" champion={champion} />
+          <BracketSlot match={thirdPlaceMatch[0]} className="slot-third-place" champion={champion} />
 
           <BracketSlot match={semifinals[0]} className="slot-left-semi" champion={champion} />
           <BracketSlot match={semifinals[1]} className="slot-right-semi" champion={champion} />
