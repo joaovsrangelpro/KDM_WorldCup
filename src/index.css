@@ -424,10 +424,39 @@ h4 {
   left: 36%;
 }
 
-.label-final {
-  top: 18%;
+.bracket-champion-showcase {
+  position: absolute;
+  top: 2.8%;
   left: 51%;
+  z-index: 4;
+  display: grid;
+  width: min(260px, 18vw);
+  justify-items: center;
+  color: #ffffff;
+  text-align: center;
   transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.bracket-trophy {
+  width: clamp(76px, 6.8vw, 112px);
+  height: auto;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.34));
+}
+
+.bracket-champion-kicker {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(0.95rem, 1.2vw, 1.35rem);
+  line-height: 1.1;
+}
+
+.bracket-champion-name {
+  margin-top: 4px;
+  color: #ffffff;
+  font-size: clamp(1.35rem, 2vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1.05;
 }
 
 .label-third-place {
@@ -490,7 +519,7 @@ h4 {
 }
 
 .slot-final {
-  top: 22%;
+  top: 31%;
   left: 50%;
   transform: translateX(-50%);
 }

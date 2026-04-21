@@ -1,5 +1,6 @@
 import flags from 'react-world-flags/src/flags'
 
+import worldCupTrophy from '../assets/World-Cup-Trophy.png'
 import { getTeamCode } from '../data/teamCodes'
 import { getTeamFlagCode } from '../data/teamFlagCodes'
 
@@ -87,6 +88,20 @@ function StageLabel({ children, className }) {
   return <span className={`bracket-stage-label ${className}`}>{children}</span>
 }
 
+function ChampionShowcase({ champion }) {
+  if (!champion) {
+    return null
+  }
+
+  return (
+    <div className="bracket-champion-showcase" aria-label={`Campeão ${champion.nome}`}>
+      <img className="bracket-trophy" src={worldCupTrophy} alt="" aria-hidden="true" />
+      <span className="bracket-champion-kicker">Campeão</span>
+      <strong className="bracket-champion-name">{champion.nome}</strong>
+    </div>
+  )
+}
+
 export default function BracketView({
   roundOf16,
   quarterFinals,
@@ -123,7 +138,7 @@ export default function BracketView({
             <path d="M31 25 H34 V52 H40" />
             <path d="M31 75 H34 V52 H40" />
             <path d="M43 52 H57" />
-            <path d="M51 27 V52" />
+            <path d="M51 31 V52" />
 
             <path d="M89 15 H81 V25 H75" />
             <path d="M89 35 H81 V25 H75" />
@@ -137,7 +152,7 @@ export default function BracketView({
           <StageLabel className="label-left-r16">Oitavas</StageLabel>
           <StageLabel className="label-left-qtr">Quartas</StageLabel>
           <StageLabel className="label-left-semi">Semi</StageLabel>
-          <StageLabel className="label-final">Final</StageLabel>
+          <ChampionShowcase champion={champion} />
           <StageLabel className="label-third-place">Terceiro lugar</StageLabel>
           <StageLabel className="label-right-semi">Semi</StageLabel>
           <StageLabel className="label-right-qtr">Quartas</StageLabel>
