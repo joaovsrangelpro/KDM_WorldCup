@@ -431,12 +431,16 @@ h4 {
   left: 51%;
   z-index: 4;
   display: grid;
-  width: min(260px, 18vw);
+  width: min(360px, 24vw);
   justify-items: center;
   color: #ffffff;
   text-align: center;
   transform: translateX(-50%);
   pointer-events: none;
+}
+
+.champion-showcase-raised {
+  top: 0.8%;
 }
 
 .bracket-trophy {
@@ -455,15 +459,20 @@ h4 {
 .bracket-champion-name {
   margin-top: 4px;
   color: #ffffff;
-  font-size: clamp(1.35rem, 2vw, 2.2rem);
+  font-size: clamp(1.25rem, 1.7vw, 2rem);
   font-weight: 900;
   line-height: 1.05;
+  white-space: nowrap;
 }
 
 .label-third-place {
   top: 72%;
   left: 51%;
   transform: translateX(-50%);
+}
+
+.third-place-label-raised {
+  top: 69.8%;
 }
 
 .label-right-semi {
@@ -711,6 +720,29 @@ h4 {
   color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   text-align: center;
+}
+
+.penalty-score {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  display: inline-flex;
+  min-width: 70px;
+  min-height: 24px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px;
+  color: #241800;
+  font-size: 0.96rem;
+  font-weight: 900;
+  background: #ffffff;
+  transform: translateX(-50%);
+}
+
+.penalty-separator {
+  color: #7f1734;
+  font-size: 0.45rem;
 }
 
 .score-separator {

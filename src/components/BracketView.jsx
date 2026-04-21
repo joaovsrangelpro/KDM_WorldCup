@@ -4,14 +4,6 @@ import worldCupTrophy from '../assets/World-Cup-Trophy.png'
 import { getTeamCode } from '../data/teamCodes'
 import { getTeamFlagCode } from '../data/teamFlagCodes'
 
-function getPenaltyText(match) {
-  if (match.team1Penalties === 0 && match.team2Penalties === 0) {
-    return null
-  }
-
-  return `${match.team1Penalties} x ${match.team2Penalties} nos pênaltis`
-}
-
 function BracketSide({ team, side, isWinner, isChampion }) {
   const teamCode = getTeamCode(team.nome)
   const flagCode = getTeamFlagCode(teamCode)
@@ -40,7 +32,7 @@ function BracketSide({ team, side, isWinner, isChampion }) {
 }
 
 function BracketMatch({ match, champion, showLabel = true }) {
-  const penaltyText = getPenaltyText(match)
+  const hasPenalties = match.team1Penalties > 0 || match.team2Penalties > 0
   const championToken = champion?.token
   const team1Wins = match.winner.token === match.team1.token
   const team2Wins = match.winner.token === match.team2.token
@@ -56,6 +48,13 @@ function BracketMatch({ match, champion, showLabel = true }) {
           isChampion={championToken === match.team1.token}
         />
         <strong className="match-score">
+          {hasPenalties ? (
+            <span className="penalty-score">
+              <span>{match.team1Penalties}</span>
+              <span className="penalty-separator">◆</span>
+              <span>{match.team2Penalties}</span>
+            </span>
+          ) : null}
           <span>{match.team1Score}</span>
           <span className="score-separator">◆</span>
           <span>{match.team2Score}</span>
@@ -67,7 +66,6 @@ function BracketMatch({ match, champion, showLabel = true }) {
           isChampion={championToken === match.team2.token}
         />
       </div>
-      {penaltyText ? <span className="penalties">{penaltyText}</span> : null}
     </article>
   )
 }
@@ -88,13 +86,20 @@ function StageLabel({ children, className }) {
   return <span className={`bracket-stage-label ${className}`}>{children}</span>
 }
 
-function ChampionShowcase({ champion }) {
+function ChampionShowcase({ champion, isRaised = false }) {
   if (!champion) {
     return null
   }
 
+  const className = [
+    'bracket-champion-showcase',
+    isRaised ? 'champion-showcase-raised' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className="bracket-champion-showcase" aria-label={`Campeão ${champion.nome}`}>
+    <div className={className} aria-label={`Campeão ${champion.nome}`}>
       <img className="bracket-trophy" src={worldCupTrophy} alt="" aria-hidden="true" />
       <span className="bracket-champion-kicker">Campeão</span>
       <strong className="bracket-champion-name">{champion.nome}</strong>
@@ -111,6 +116,17 @@ export default function BracketView({
   champion,
 }) {
   const hasBracket = roundOf16.length > 0
+  const finalHasPenalties =
+    finalMatch[0] && (finalMatch[0].team1Penalties > 0 || finalMatch[0].team2Penalties > 0)
+  const thirdPlaceHasPenalties =
+    thirdPlaceMatch[0] &&
+    (thirdPlaceMatch[0].team1Penalties > 0 || thirdPlaceMatch[0].team2Penalties > 0)
+  const thirdPlaceLabelClassName = [
+    'label-third-place',
+    thirdPlaceHasPenalties ? 'third-place-label-raised' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <section className="bracket-view">
@@ -152,8 +168,8 @@ export default function BracketView({
           <StageLabel className="label-left-r16">Oitavas</StageLabel>
           <StageLabel className="label-left-qtr">Quartas</StageLabel>
           <StageLabel className="label-left-semi">Semi</StageLabel>
-          <ChampionShowcase champion={champion} />
-          <StageLabel className="label-third-place">Terceiro lugar</StageLabel>
+          <ChampionShowcase champion={champion} isRaised={finalHasPenalties} />
+          <StageLabel className={thirdPlaceLabelClassName}>Terceiro lugar</StageLabel>
           <StageLabel className="label-right-semi">Semi</StageLabel>
           <StageLabel className="label-right-qtr">Quartas</StageLabel>
           <StageLabel className="label-right-r16">Oitavas</StageLabel>
