@@ -818,3 +818,23 @@ h4 {
   text-overflow: unset;
   white-space: nowrap;
 }
+
+.bracket-submit-section {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: calc(100vw - 28px);
+  max-width: none;
+  margin: 12px 0 0 calc(50% - 50vw + 14px);
+  padding: 0 0 34px;
+  color: #ffffff;
+}
+
+.bracket-submit-section .primary-button:hover:not(:disabled) {
+  background: #6d28d9;
+}
+
+.bracket-submit-section .status-message {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+}

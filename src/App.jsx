@@ -193,14 +193,29 @@ function App() {
       </nav>
 
       {activeView === 'bracket' ? (
-        <BracketView
-          roundOf16={roundOf16}
-          quarterFinals={quarterFinals}
-          semifinals={semifinals}
-          thirdPlaceMatch={thirdPlaceMatch}
-          finalMatch={finalMatch}
-          champion={champion}
-        />
+        <>
+          <BracketView
+            roundOf16={roundOf16}
+            quarterFinals={quarterFinals}
+            semifinals={semifinals}
+            thirdPlaceMatch={thirdPlaceMatch}
+            finalMatch={finalMatch}
+            champion={champion}
+          />
+
+          <section className="bracket-submit-section">
+            <button
+              className="primary-button"
+              type="button"
+              onClick={handleSendFinalResult}
+              disabled={!champion || isSendingFinalResult}
+            >
+              {isSendingFinalResult ? 'Enviando resultado...' : 'Enviar resultado final'}
+            </button>
+
+            {finalResultStatus && <p className="status-message">{finalResultStatus}</p>}
+          </section>
+        </>
       ) : (
         <>
       <section className="section-card">
