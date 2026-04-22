@@ -154,4 +154,11 @@ principais da simulação:
 ```bash
 npm run lint
 npm run build
+npm run validate:simulation
 ```
+
+O comando `npm run validate:simulation` executa `scripts/validateSimulation.js`
+com 32 seleções fictícias e confirma as principais invariantes da regra de negócio:
+8 grupos, 4 seleções por grupo, 3 rodadas, 6 partidas por grupo, 16 classificados,
+mata-mata completo, final com campeão, terceiro lugar e resolução de empate por
+pênaltis.
