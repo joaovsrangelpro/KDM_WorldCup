@@ -165,8 +165,8 @@ function App() {
     <main className="app">
       <section className="hero-section">
         <p className="eyebrow">Katalyst Data Management</p>
-        <h1>KDM World Cup Simulator</h1>
-        <p>Consuma a API, sorteie os grupos, simule a Copa e envie o resultado final.</p>
+        <h1>World Cup Simulator</h1>
+        <p>Sorteie os grupos, simule a Copa e descubra o campeão.</p>
 
         <button className="primary-button" type="button" onClick={handleLoadTeams} disabled={isLoading}>
           {isLoading ? 'Carregando...' : 'Buscar seleções e sortear grupos'}
